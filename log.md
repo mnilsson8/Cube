@@ -42,6 +42,7 @@ Next steps:
 * test code for data cube
 * try making data cube but as .hdf5 instead of .pkl
 * ask if doing it this way even makes sense lol (aka I think something is confusing me but I'm not even sure what.)
+<<<<<<< HEAD
 ---
 Feb 7, 2026
 
@@ -51,3 +52,6 @@ Feb 7, 2026
 
 Next steps:
 * same steps as from Feb 6
+=======
+* delete/rm HDF5_file_for_SNIa-SALT2.ipynb
+---
