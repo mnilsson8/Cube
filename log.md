@@ -42,7 +42,7 @@ Next steps:
 * test code for data cube
 * try making data cube but as .hdf5 instead of .pkl
 * ask if doing it this way even makes sense lol (aka I think something is confusing me but I'm not even sure what.)
-<<<<<<< HEAD
+* delete/rm HDF5_file_for_SNIa-SALT2.ipynb
 ---
 Feb 7, 2026
 
@@ -51,7 +51,7 @@ Feb 7, 2026
 | HDF5_file_for_SNIa-SALT2.ipynb | Removed from staging/repository. Also accessed Darwin on my Windows laptop which will make things very convenient going forward | 
 
 Next steps:
-* same steps as from Feb 6
-=======
-* delete/rm HDF5_file_for_SNIa-SALT2.ipynb
+* test code for data cube
+* try saving data cube but as .hdf5 instead of .pkl
 ---
+
