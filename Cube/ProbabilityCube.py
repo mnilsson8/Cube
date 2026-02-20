@@ -7,11 +7,16 @@ import pickle
 
 import Functions
 
-Path0 = '/global/homes/l/lianming/Presto-Color-2/data'
-Path1 = '/global/homes/l/lianming/Presto-Color-2/data/Test_Interp'
-Path2 = '/global/homes/l/lianming/Presto-Color-2/data/2Day_Interp'
+#Path0 = '/global/homes/l/lianming/Presto-Color-2/data'
+Path0 = '/lustre/lrspec/users/4300/cube/Cube/Data'
+Path1 = '/lustre/lrspec/prestocolor/Test_Interp1'
+#Path2 = '/global/homes/l/lianming/Presto-Color-2/data/2Day_Interp'
 
-PathInterp = Path2
+# FolderPath = '/global/cscratch1/sd/lianming/Results'
+# FolderPath = '/global/homes/l/lianming/Presto-Color-2/data'
+#is this not just FilePath0?
+
+PathInterp = Path1
 
 ####### Parameter setting
 
@@ -87,15 +92,14 @@ print( 'The range of Color is [{}, {}].'.format( min(ColorRange[0]), max(ColorRa
 print( '{} min spent.'.format( (time.time() - time1)/60 ))
 
 ############
-# FolderPath = '/global/cscratch1/sd/lianming/Results'
-FolderPath = '/global/homes/l/lianming/Presto-Color-2/data'
+
 
 timestring = time.ctime()
 Len = len(EventNames)
 FileName = '_'.join(['ProbabilityCube', timestring[4:7]+timestring[8:10], timestring[11:16],
                      ','.join( [ EventNames[ii] for ii in range(Len) if ii <3 ] + ['and_{}_more'.format(Len-3) for _ in range(1) if Len>3]  ) ] )
 
-FilePath = os.path.join(FolderPath, FileName+'.pkl')
+FilePath = os.path.join(Path0, FileName+'.pkl')
 FilePath0 = FilePath
 
 ii = 1
@@ -104,6 +108,6 @@ while os.path.exists(FilePath):
     ii += 1
 
 with open(FilePath, 'wb') as f:
-    pickle.dump(EventNames, f)
+#    pickle.dump(EventNames, f)
     pickle.dump(InfoDict, f)
     pickle.dump(HashTable, f ) 

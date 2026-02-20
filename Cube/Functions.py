@@ -199,7 +199,7 @@ def CalculateMap(Interp_load, TimeRange_load, Band1, Band2, dT1, dT2, PointsPDay
         TimeRangeEnd = min( TimeRange_load[Band1][II][1] - dT2/1440, TimeRange_load[Band2][II][1] - dT1/1440 )
 
         TimeRange = TimeRangeEnd - TimeRangeStart
-        SampleNo = np.int(PointsPDay*TimeRange)
+        SampleNo = int(PointsPDay*TimeRange)
         
         XX = np.random.rand(SampleNo)*TimeRange + TimeRangeStart
 
@@ -238,8 +238,8 @@ def CalculateMap(Interp_load, TimeRange_load, Band1, Band2, dT1, dT2, PointsPDay
 #Calculate Map Function for the "cube"
 def CalculateMap1(Interp_load, TimeRange_load, Band1, Band2, dT1, dT2, PointsPDay = 50, Thr=27.5, SaveData=0, TargetFolder='MapData'):
     
-    dMag = np.zeros( np.int(40000*PointsPDay*400) )
-    Color = np.zeros( np.int(40000*PointsPDay*400) )
+    dMag = np.zeros( int(40000*PointsPDay*400) )
+    Color = np.zeros( int(40000*PointsPDay*400) )
     
     Ind = 0
 
@@ -257,7 +257,7 @@ def CalculateMap1(Interp_load, TimeRange_load, Band1, Band2, dT1, dT2, PointsPDa
         TimeRangeEnd = min( TimeRange_load[Band1][II][1] - dT2/1440, TimeRange_load[Band2][II][1] - dT1/1440 )
 
         TimeRange = TimeRangeEnd - TimeRangeStart
-        SampleNo = np.int(PointsPDay*TimeRange)
+        SampleNo = int(PointsPDay*TimeRange)
         
         XX = np.random.rand(SampleNo)*TimeRange + TimeRangeStart
 
