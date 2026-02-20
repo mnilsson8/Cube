@@ -54,4 +54,18 @@ Next steps:
 * test code for data cube
 * try saving data cube but as .hdf5 instead of .pkl
 ---
+Feb 20, 2026
+| File | What changed | 
+|---|---|
+| ProbabilityCube.py | Uploaded file from PrestoColor2, used to make data cube for SNIa-SALT2 |
+| Data | Made directory for data cube | 
+| PlottingDataCubeSlice_test.ipynb | was in fact able to plot a data cube slice. There are comments on things to update in there.|
 
+Next steps:
+* no real reason to save as .hdf5
+* make more plots of data cubes to make sure I understand how to load data in
+* change dT1s and dT2s for the data cube and also add more bands
+* change enquiry function in PlottingDataCubeSlice_test.ipynb so it properly pulls 4 indices for the HashTable
+* set up VSCode SSH
+
+---
