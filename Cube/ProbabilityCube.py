@@ -8,7 +8,7 @@ import pickle
 import Functions
 
 #Path0 = '/global/homes/l/lianming/Presto-Color-2/data'
-Path0 = '/lustre/lrspec/users/4300/cube/Cube/Data'
+Path0 = '/lustre/lrspec/users/4300/cube/Data/Datacube'
 Path1 = '/lustre/lrspec/prestocolor/Test_Interp1'
 #Path2 = '/global/homes/l/lianming/Presto-Color-2/data/2Day_Interp'
 
@@ -21,7 +21,7 @@ PathInterp = Path1
 ####### Parameter setting
 
 # EventNames = np.load(os.path.join(PathInterp, 'EventName.npy'))
-EventNames = [ 'SNIa-SALT2']
+EventNames = [ 'KN_K17']
 
 PointsPerDay = 0.1
 ObjNo = 1000
@@ -32,10 +32,10 @@ InfoDict = {}
 InfoDict['EventNames'] = EventNames
 # InfoDict['Bands'] = ['u', 'g', 'r', 'i', 'z', 'Y']
 InfoDict['Bands'] = ['g', 'i']
-# InfoDict['dT1s'] = np.arange(0, 241, 15)
-# InfoDict['dT2s'] =  np.arange(120, 481, 15)
-InfoDict['dT1s'] = np.arange(0, 31, 15)
-InfoDict['dT2s'] =  np.arange(30, 61, 15)
+InfoDict['dT1s'] = np.arange(0, 241, 15)
+InfoDict['dT2s'] =  np.arange(120, 481, 15)
+# InfoDict['dT1s'] = np.arange(0, 31, 15)
+# InfoDict['dT2s'] =  np.arange(30, 61, 15)
 
 InfoDict['BinMag'] = np.arange(-1.25, 3.84, 0.1)
 InfoDict['BinColor'] = np.arange(-9.25, 9.8, 0.5)
