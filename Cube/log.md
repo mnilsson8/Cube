@@ -69,3 +69,10 @@ Next steps:
 * set up VSCode SSH
 
 ---
+Mar 18, 2026
+| File | What changed | 
+|---|---|
+| Data/Phot | Made another directory for data because the one I made a month ago doesn't exist in GitHub |
+| SweetSpotLCs.txt | Added SweetSpot LCs to Data/Phot. These are the LCs from DR1. Photometry was done in JHKs bands.| 
+* load SweetSpot data in
+* test interpolating on SweetSpot, knowing I'm going to change the method of interpolation later
