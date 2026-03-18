@@ -74,5 +74,10 @@ Mar 18, 2026
 |---|---|
 | Data/Phot | Made another directory for data because the one I made a month ago doesn't exist in GitHub |
 | SweetSpotLCs.txt | Added SweetSpot LCs to Data/Phot. These are the LCs from DR1. Photometry was done in JHKs bands.| 
+| Data/Datacube | Moved SNIa_SALT2 datacube into new directory. Added probability cubes for KN_B19 and KN_K17.|
+| ProbabilityCube.py | Updated to make data cube for KN_B19 and KN_K17.|
 * load SweetSpot data in
 * test interpolating on SweetSpot, knowing I'm going to change the method of interpolation later
+* plot KNe probability cubes
+* figure out what the outlier is for KN_K17
+* determine which time intervals to use to make KNe datacubes
