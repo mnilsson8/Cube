@@ -30,8 +30,9 @@ import sys
 # RootPath = '/global/cscratch1/sd/lianming/'
 Path1 = '/lustre/lrspec/prestocolor/Test_Interp1'
 # Path2 = '/global/homes/l/lianming/Presto-Color-2/data/2Day_Interp'
+Path2 = '/lustre/lrspec/users/4300/cube/Data/Interp'
 
-TargetFolder = '/lustre/lrspec/users/4300/cube/Data/Datacube/KNe_updated'
+TargetFolder = '/lustre/lrspec/users/4300/cube/Data/Datacube/SNIa-SALT2'
 
 PathInterp = Path1
 
@@ -42,12 +43,14 @@ PathInterp = Path1
               # 'SNIbc-Templates', 'TDE', 'V19_CC+HostXT', 'uLens-Binary',
               # 'uLens-Single-GenLens', 'uLens-Single_PyLIMA']
 
-# EventNames = [ 'SNIa-SALT2']
+EventNames = [ 'SNIa-SALT2']
 # EventNames = EventNames[0:11]
-EventNames = ["KN_B19"]
+# EventNames = ["KN_B19"]
+# EventNames = [ 'SweetSpot_iPTF13dge','SweetSpot_LSQ12fuk','SweetSpot_LSQ13crf','SweetSpot_SN2011fe','SweetSpot_SN2011fs','SweetSpot_SN2012cg','SweetSpot_SN2012cg','SweetSpot_SN2012fr','SweetSpot_SN2013bs','SweetSpot_SN2013fw']
+#EventNames = ["CAATSNIa"]
 
 PointsPerDay = 1
-Objects = np.arange(0, 4000, 4)
+Objects = np.arange(0, 4000, 20)
 
 Bands = ['u', 'g', 'r', 'i', 'z', 'Y']
 #Bands = ['g', 'i']
@@ -114,10 +117,11 @@ def CalculateMap(BandPair, FilePath,
         
     if TotalObjNo <= Objects[-1]:
         Objects = Objects[Objects<TotalObjNo]
-        
+
     HashTable = np.zeros(HashTableDim[1:], dtype=np.uint32)
     
     for kk, TimePair in enumerate(TimePairs):
+        # print(kk+1,"of",len(TimePairs), TimePair)
         
         dT1 = TimePair[0]
         dT2 = TimePair[1]
@@ -131,7 +135,6 @@ def CalculateMap(BandPair, FilePath,
         ColorMax = []
 
         for II in Objects:
-
             if Interp_load[Band1][II]==[] or Interp_load[Band2][II]==[]:
                 continue
 
@@ -170,8 +173,8 @@ def CalculateMap(BandPair, FilePath,
         outliersNo = len(dMag) - int(histdata.sum())
 
         HashTable[kk] = histdata
-        if kk == 1000 or kk == len(TimePairs)-1:
-            print("Step 3")
+        # if kk == 1000 or kk == len(TimePairs)-1:
+        #     print("Step 3")
     return  [len(Objects), BandPair, outliersNo, min(dMagMin), max(dMagMax), min(ColorMin), max(ColorMax)], HashTable
 
 def reduceAndSave(results, EventName, HashTableDim=HashTableDim, 
@@ -257,7 +260,8 @@ def reduceAndSave(results, EventName, HashTableDim=HashTableDim,
 for EventName in EventNames:
     results = []
     Path = GeneratePath(EventName)
-    for BandPair in BandPairs:
+    for z, BandPair in enumerate(BandPairs):
+        print(f'{z+1} of {len(BandPairs)}, {BandPair}')
         results.append(CalculateMap(BandPair, Path))
     reduceAndSave(results, EventName)
     
