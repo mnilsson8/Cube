@@ -177,15 +177,83 @@ def PlotLightCurve(Path, Band, EventName=None, SeedFile=None, SeedObj=None, Prop
 
 
 #Calculate Map Function for the "cube"
-def CalculateMap(Interp_load, TimeRange_load, Band1, Band2, dT1, dT2, PointsPDay = 50, Thr=27.5, ObjNo=None, SaveData=0, TargetFolder='MapData'):
+# def CalculateMap(Interp_load, TimeRange_load, Band1, Band2, dT1, dT2, PointsPDay = 50, Thr=27.5, ObjNo=None, SaveData=0, TargetFolder='MapData'):
+    
+#     dMag = []
+#     Color = []
+    
+#     if ObjNo == None:
+#         ObjNo = len(Interp_load[Band1])
+
+#     for II in range(ObjNo):
+        
+#         if Interp_load[Band1][II]==[] or Interp_load[Band2][II]==[]:
+#             continue
+        
+#         # if II%5000 == 4999:
+#         #     print('|')
+#         # elif II%50 == 49:
+#         #     print('|', end='' )
+
+#         TimeRangeStart = max( TimeRange_load[Band1][II][0], TimeRange_load[Band2][II][0] - dT1/1440 )
+#         TimeRangeEnd = min( TimeRange_load[Band1][II][1] - dT2/1440, TimeRange_load[Band2][II][1] - dT1/1440 )
+
+#         TimeRange = TimeRangeEnd - TimeRangeStart
+#         SampleNo = int(PointsPDay*TimeRange)
+        
+#         XX = np.random.rand(SampleNo)*TimeRange + TimeRangeStart
+
+#         Mag1 = Interp_load[Band1][II](XX)
+#         Mag2 = Interp_load[Band2][II](XX+dT1/1440)
+#         Mag12 = Interp_load[Band1][II](XX+dT2/1440)
+
+#         Mask = (Mag1<Thr) * (Mag2<Thr) *(Mag12<Thr)
+
+#         dMag.extend(Mag1[Mask] - Mag12[Mask])
+#         Color.extend(Mag1[Mask] - Mag2[Mask])
+        
+#     data = np.array([dMag, Color])
+    
+#     if SaveData == 1:
+    
+#         TargetPath = os.path.join(Path0, TargetFolder)                            
+#         if not os.path.isdir(TargetPath):
+#             os.mkdir(TargetPath)
+#         os.chdir(TargetPath)
+
+#         Ind1 = PathInterp.rfind('/')
+#         Ind2 = PathInterp.rfind('_')
+        
+#         FileName = '{}{}_dT1_{}_dT2_{}_PPD{}_Thr{}_{}_Source_{}.npy'.format(Band1, Band2, dT1, dT2, PointsPDay, Thr, EventName, PathInterp[Ind1+1:Ind2])
+#         np.save(FileName, data)
+        
+#         print('The data is saved at {} as {}.'.format(TargetPath, FileName))
+        
+#     return data
+
+
+def CalculateMap(Interp_load, TimeRange_load, Band1, Band2, dT1, dT2, 
+                 PointsPDay = 50, Thrs=None, ObjNo=None, SeedObj=None, SaveData=0, TargetFolder='MapData'):
     
     dMag = []
     Color = []
     
+    if Thrs == None:
+        Thrs = {'u': 23.9, 'g': 25.0, 'r': 24.7, 'i': 24.0, 'z': 23.3, 'Y': 22.1}
+        
+    TotalObjNo = len(Interp_load[Band1])
+    
     if ObjNo == None:
-        ObjNo = len(Interp_load[Band1])
+        ObjInd = range(TotalObjNo)
+    elif ObjNo < 0.1*TotalObjNo:
+        np.random.seed(SeedObj)
+        ObjInd = np.random.randint(0, TotalObjNo, size=ObjNo)
+    elif ObjNo > TotalObjNo:
+        raise ValueError('The No of Objects excceeds limit. The total No is {}'.format(TotalObjNo))
+    else:
+        ObjInd = range(ObjNo)                                   
 
-    for II in range(ObjNo):
+    for II in ObjInd:
         
         if Interp_load[Band1][II]==[] or Interp_load[Band2][II]==[]:
             continue
@@ -207,7 +275,7 @@ def CalculateMap(Interp_load, TimeRange_load, Band1, Band2, dT1, dT2, PointsPDay
         Mag2 = Interp_load[Band2][II](XX+dT1/1440)
         Mag12 = Interp_load[Band1][II](XX+dT2/1440)
 
-        Mask = (Mag1<Thr) * (Mag2<Thr) *(Mag12<Thr)
+        Mask = (Mag1<Thrs[Band1]) * (Mag2<Thrs[Band2]) *(Mag12<Thrs[Band1])
 
         dMag.extend(Mag1[Mask] - Mag12[Mask])
         Color.extend(Mag1[Mask] - Mag2[Mask])
@@ -224,15 +292,14 @@ def CalculateMap(Interp_load, TimeRange_load, Band1, Band2, dT1, dT2, PointsPDay
         Ind1 = PathInterp.rfind('/')
         Ind2 = PathInterp.rfind('_')
         
-        FileName = '{}{}_dT1_{}_dT2_{}_PPD{}_Thr{}_{}_Source_{}.npy'.format(Band1, Band2, dT1, dT2, PointsPDay, Thr, EventName, PathInterp[Ind1+1:Ind2])
+        FileName = '{}{}_dT1_{}_dT2_{}_PPD{}_Thr{}_{}_Source_{}.npy'.format(Band1, Band2, dT1, dT2, 
+                                                                            PointsPDay, Thr, EventName, 
+                                                                            PathInterp[Ind1+1:Ind2])
         np.save(FileName, data)
         
         print('The data is saved at {} as {}.'.format(TargetPath, FileName))
         
     return data
-
-
-
 
 
 #Calculate Map Function for the "cube"
