@@ -43,9 +43,19 @@ phasemax = 50
 log_transform = 22
 mangle_sed = True
 
-
 SNeNames = os.listdir(f"/home/4300/miniconda3/envs/gopreaux/lib/python3.10/site-packages/caat/data/Other/SNIa/")
 
+
+# minus SweetSpot data
+# SS_info = pd.read_fwf("https://cdsarc.cds.unistra.fr/ftp/J/AJ/155/201/table3.dat", 
+#                       names = ["Name","RA","Dec","SN Type","z","Classifier","Discoverer","Tmax","Has LC?"],
+#                       colspecs = [[0,23],[24,36],[37,49],[50,52],[54,61],[63,74],[75,81],[81,86],[87,90]])   
+# SS_info["Name"] = SS_info["Name"].str.replace(" ","")
+# SweetSpotNames = []
+# for name in SS_info["Name"]:
+#     if os.path.exists(f"/home/4300/miniconda3/envs/gopreaux/lib/python3.10/site-packages/caat/data/Other/SNIa/{name}"):
+#         SweetSpotNames.append(name)
+# SNeNames = list(set(SNeNames) - set(SweetSpotNames))
 
 for name in SNeNames:
     sn_type = SNCollection([name])
@@ -84,9 +94,13 @@ for name in SNeNames:
     else:
         print(f'{name} is weird')
         continue
+print("Modeling done!")
 
 ObjInterps = {'u': [], 'g': [], 'r': [], 'i': [], 'z': [], 'Y': []}
 TimeRange = {'u': [], 'g': [], 'r': [], 'i': [], 'z': [], 'Y': []}
+SNeIncluded = {'u': [], 'g': [], 'r': [], 'i': [], 'z': [], 'Y': []}
+
+
 for i, model in enumerate(models):
     print(f'{model.collection.sne[0]}, {i+1} of {len(models)}')
     model.surface.iqr = np.abs(model.surface.iqr)
@@ -96,14 +110,16 @@ for i, model in enumerate(models):
             times_wl = np.arange(-10,40,0.1)
             wls = np.full(len(times_wl),wl)
             phases, pred, dev = model.predict_photometry_points(wls,times_wl)
-            interp = make_smoothing_spline(phases, pred)
+            interp = make_smoothing_spline(phases, np.negative(pred))
             ObjInterps[filt].append(interp)
             TimeRange[filt].append([phases[0],phases[-1]])
             EventName = "SweetSpot_"+model.collection.sne[0].name
+            SNeIncluded[filt].append(model.collection.sne[0].name)
     except ValueError:
         print("Error",len(ObjInterps))
         continue
-with open(f'/lustre/lrspec/users/4300/cube/Data/Interp/CAATSNIa_Interp.pkl', 'wb') as f:
+with open(f'/lustre/lrspec/users/4300/cube/Data/Interp/Neg_CAATSNIa_Interp.pkl', 'wb') as f:
     pickle.dump(ObjInterps, f)
     pickle.dump(TimeRange, f)
+    pickle.dump(SNeIncluded, f)
 print("Done!")
