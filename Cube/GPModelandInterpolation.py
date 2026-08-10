@@ -24,6 +24,13 @@ logger = logging.getLogger()
 logger.setLevel(logging.ERROR)
 
 
+SNtype = "SNII"
+SNsubtype = "SNII"
+
+
+
+
+
 band_wl_dict = {"u":3600,
                 "g":5000,
                 "r":6400,
@@ -36,14 +43,14 @@ band_wl_dict = {"u":3600,
 models = []
 
 kernel = RBF([np.log(10.0), np.log10(500.0)], (0.1, 3.0))
-sn_to_normalize = SNCollection(sntype="Other", snsubtype = "SNIa")
+sn_to_normalize = SNCollection(sntype=SNtype, snsubtype = SNsubtype)
 filts = ['UVW2', 'UVM2', 'UVW1', 'U', 'B', 'g', 'c', 'V', 'r', 'o', 'i','z','y','J','H','K']
 phasemin = -20
 phasemax = 50
 log_transform = 22
 mangle_sed = True
 
-SNeNames = os.listdir(f"/home/4300/miniconda3/envs/gopreaux/lib/python3.10/site-packages/caat/data/Other/SNIa/")
+SNeNames = os.listdir(f"/home/4300/miniconda3/envs/gopreaux/lib/python3.10/site-packages/caat/data/{SNtype}/{SNsubtype}/")
 
 
 # minus SweetSpot data
@@ -118,7 +125,7 @@ for i, model in enumerate(models):
     except ValueError:
         print("Error",len(ObjInterps))
         continue
-with open(f'/lustre/lrspec/users/4300/cube/Data/Interp/Neg_CAATSNIa_Interp.pkl', 'wb') as f:
+with open(f'/lustre/lrspec/users/4300/cube/Data/Interp/CAAT_{SNsubtype}_Interp.pkl', 'wb') as f:
     pickle.dump(ObjInterps, f)
     pickle.dump(TimeRange, f)
     pickle.dump(SNeIncluded, f)
